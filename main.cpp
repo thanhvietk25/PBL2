@@ -9,6 +9,7 @@
 #include "Manager_Medicine.h"
 #include "Manager_DonThuoc.h"
 
+const int max_ktu = 68;
 using namespace std;
 
 // string FILE_PATIENT = "C:\\C++\\PBL2\\1.patient.txt";
@@ -16,6 +17,48 @@ string FILE_PATIENT = "C:\\C++\\PBL2\\1.patient.txt";
 string FILE_DOCTOR  = "C:\\C++\\PBL2\\2.Danhsachbacsi.txt";
 string FILE_THUOC   = "C:\\C++\\PBL2\\3.Thuoc.txt";
 string FILE_DON     = "C:\\C++\\PBL2\\4.Donthuoc.txt";
+//Tổng có max_ktu ký tự
+void printgiua(const string Tbao, const string kytu,const int solan = max_ktu){
+    int solaan = solan - Tbao.size();
+    cout << endl;
+    int soolan = solaan;
+    if(solaan %2 == 1){ soolan++;}
+    for(int i = 0; i < soolan/2; i++){
+        cout << kytu;
+    }
+    cout << Tbao;
+    
+    for(int i = 0; i < solaan/2; i++){
+        cout << kytu;
+    }
+    cout << endl;
+    return;
+}
+
+void printtb(const string Tbao, const string kytu,const int solan1){
+    cout << "\n";
+    int solan = solan1 - Tbao.size();
+    int kytuconlai = solan1 - Tbao.size();
+    int du = kytuconlai % 2;
+    for(int i = 0; i < solan1; i++){
+        cout << kytu;
+    }
+    cout << "\n" << kytu;
+    for(int i = 0; i < (kytuconlai - 1)/2; i++){
+        cout << " ";
+    }
+    cout << Tbao ;
+    for(int i = 0; i < (kytuconlai - 1)/2 + du; i++){
+        cout << " ";
+    }
+    cout << kytu;
+    cout << "\n";
+    for(int i = 0; i < solan1; i++){
+        cout << kytu;
+    }
+    cout << "\n";
+    return;
+}
 
 int docLuaChon(const string &thongbao)
 {
@@ -38,15 +81,16 @@ void menuBacSi(Manager_Doctor &ds)
     int chon;
     do
     {
-        cout << "\n========== QUAN LY BAC SI ==========\n";
+        // cout << "\n========== QUAN LY BAC SI ==========\n";
+        printgiua(" QUAN LY BAC SI ", "=", max_ktu);
         cout << "1. Xem danh sach bac si\n";
         cout << "2. Them bac si moi\n";
         cout << "3. Tim bac si theo ten\n";
         cout << "4. Tim bac si theo chuyen nganh\n";
         cout << "5. Sua thong tin bac si\n";
         cout << "6. Xoa bac si theo CCCD\n";
-        cout << "0. Quay lai\n";
-        cout << "====================================\n";
+        cout << "0. Quay lai";
+        printgiua("", "=", max_ktu);
         chon = docLuaChon("Lua chon cua ban: ");
 
         switch (chon)
@@ -92,7 +136,7 @@ void menuBenhNhan(manager_patient &ds)
     int chon;
     do
     {
-        cout << "\n========== QUAN LY BENH NHAN ==========\n";
+        printgiua(" QUAN LY BENH NHAN ", "=" ,max_ktu);
         cout << "1. Xem danh sach benh nhan\n";
         cout << "2. Them benh nhan moi\n";
         cout << "3. Tim benh nhan theo ten\n";
@@ -100,7 +144,7 @@ void menuBenhNhan(manager_patient &ds)
         cout << "5. Sua thong tin benh nhan\n";
         cout << "6. Xoa benh nhan (chua cai dat)\n";
         cout << "0. Quay lai\n";
-        cout << "=======================================\n";
+        printgiua("", "=", max_ktu);
         chon = docLuaChon("Lua chon cua ban: ");
 
         switch (chon)
@@ -186,6 +230,7 @@ void menuDonThuoc(Manager_DonThuoc &don, Manager_Doctor &bacsi,
     do
     {
         cout << "\n========== KE DON THUOC ==========\n";
+        printgiua(" KE DON THUOC ","=",max_ktu);
         cout << "1. Ke don thuoc moi\n";
         cout << "2. Xem tat ca don thuoc da ke\n";
         cout << "3. Xem don thuoc theo CCCD benh nhan\n";
@@ -231,19 +276,7 @@ int main()
     fd.close();
 
     ifstream fp(FILE_PATIENT);
-
-if (!fp.is_open())
-{
-    cout << "Khong mo duoc file benh nhan: "
-         << FILE_PATIENT << endl;
-}
-else
-{
-    cout << "Mo file benh nhan thanh cong!\n";
-    patients.readFile(fp);
-}
-
-fp.close();
+    fp.close();
 
     ifstream fthuoc(FILE_THUOC);
     kho.readFile(fthuoc);
@@ -256,15 +289,16 @@ fp.close();
     int chon;
     do
     {
-        cout << "\n################################################\n";
-        cout << "#          QUAN LY BENH VIEN - PBL2            #\n";
-        cout << "################################################\n";
+        cout << "\n####################################################\n";
+        cout << "#            QUAN LY BENH VIEN - PBL2              #\n";
+        cout << "####################################################\n";
+        printtb("QUAN LY BENH VIEN - PBL2", "#", max_ktu);
         cout << "  1. Quan ly bac si\n";
         cout << "  2. Quan ly benh nhan\n";
         cout << "  3. Quan ly thuoc\n";
         cout << "  4. Ke don thuoc\n";
-        cout << "  0. Thoat chuong trinh\n";
-        cout << "################################################\n";
+        cout << "  0. Thoat chuong trinh";
+        printgiua("", "#");
         chon = docLuaChon("Lua chon cua ban: ");
 
         switch (chon)
