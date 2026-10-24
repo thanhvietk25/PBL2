@@ -9,6 +9,7 @@
 
 #include "Date.h"
 #include "Input_util.h"
+#include "Display.h"
 
 using namespace std;
 
@@ -72,13 +73,13 @@ public:
 
     void display()
     {
-        cout << "\n=============== DON THUOC " << madon << " ===============\n";
+        printgiua(" DON THUOC " + madon + " ", "=", 65);
         cout << "Ngay ke   : ";
         ngay.xuat();
         cout << endl;
         cout << "Benh nhan : " << tenbn << " (CCCD: " << cccdbn << ")\n";
         cout << "Bac si ke : " << tenbs << " (CCCD: " << cccdbs << ")\n";
-        cout << "-----------------------------------------------------------------\n";
+        printline("-", 65);
         cout << left
              << setw(5) << "STT"
              << setw(24) << "Ten thuoc"
@@ -86,7 +87,7 @@ public:
              << setw(12) << "Don gia"
              << setw(14) << "Thanh tien"
              << "Lieu dung" << endl;
-        cout << "-----------------------------------------------------------------\n";
+        printline("-", 65);
 
         for (size_t i = 0; i < ds.size(); i++)
         {
@@ -99,9 +100,9 @@ public:
                  << ds[i].lieudung << endl;
         }
 
-        cout << "-----------------------------------------------------------------\n";
+        printline("-", 65);
         cout << "TONG TIEN: " << dinhDangTien(tongTien()) << " VND\n";
-        cout << "=================================================================\n";
+        printline("=", 65);
     }
 
     // Co the nem ngoai le (stoi/stod) neu file sai dinh dang -> Manager bat

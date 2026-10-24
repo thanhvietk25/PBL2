@@ -12,6 +12,7 @@
 #include "Medicine.h"
 #include "Manager_Medicine.h"
 #include "Doctor.h"
+#include "Display.h"
 
 using namespace std;
 
@@ -166,7 +167,8 @@ public:
                 thuocBN[i].display(); // Gọi hàm display của class Thuoc
             }
         }
-        cout << "\n-----------------------------------------\n";
+        cout << "\n";
+        printline("-");
     }
 
     void readFile(ifstream &file)

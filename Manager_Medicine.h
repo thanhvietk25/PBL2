@@ -7,6 +7,7 @@
 #include <iomanip>
 
 #include "Medicine.h"
+#include "Display.h"
 
 using namespace std;
 
@@ -38,31 +39,45 @@ public:
         }
         return false;
     }
-
-    void display()
+    bool checkTenThuoc(string tenthuoc)
     {
-        cout << "\n================ DANH SACH THUOC ================\n";
+        for (size_t i = 0; i < thuocs.size(); i++)
+        {
+            if (thuocs[i].gettenthuoc() == tenthuoc)
+                return true;
+        }
+        return false;
+    }
+    //Nếu True -> lớn hơn hoặc bằng so, nếu false bé hơn
+    void display(int so = 0, bool c = true)
+    {
+        printgiua(" DANH SACH THUOC ", "=",72);
 
         cout << left
-             << setw(12) << "Ma thuoc"
-             << setw(25) << "Ten thuoc"
-             << setw(15) << "Don vi"
-             << setw(15) << "Don gia"
+             << setw(13) << "Ma thuoc"
+             << setw(27) << "Ten thuoc"
+             << setw(11) << "Don vi"
+             << setw(11) << "Don gia"
              << setw(12) << "So luong"
              << endl;
 
-        cout << "==================================================\n";
+        printline("=",72);
 
         for (size_t i = 0; i < thuocs.size(); i++)
         {
-            cout << left
-                 << setw(12) << thuocs[i].getmathuoc()
-                 << setw(25) << thuocs[i].gettenthuoc()
-                 << setw(15) << thuocs[i].getdonvitinh()
-                 << setw(15) << thuocs[i].getdongia()
+            if(c ? thuocs[i].getsoluong() >= so : thuocs[i].getsoluong() < so){
+            cout << left << " "
+                 << setw(12)  << thuocs[i].getmathuoc()
+                 << setw(27) << thuocs[i].gettenthuoc()
+                 << setw(11) << thuocs[i].getdonvitinh()
+                 << setw(11) << thuocs[i].getdongia()
                  << setw(12) << thuocs[i].getsoluong()
                  << endl;
+            printline("-",72);
+            }
+
         }
+        printline("=",72);
     }
 
     void addThuoc(const string &filePath)
@@ -73,6 +88,11 @@ public:
         if (checkMaThuoc(thuoc.getmathuoc()))
         {
             cout << "Ma thuoc da ton tai!\n";
+            return;
+        }
+        if (checkTenThuoc(thuoc.gettenthuoc()))
+        {
+            cout << "Ten thuoc da ton tai!\n";
             return;
         }
 
@@ -88,89 +108,119 @@ public:
         cout << "Nhap ten thuoc can tim: ";
         getline(cin, ten);
 
-        bool found = false;
-
         for (size_t i = 0; i < thuocs.size(); i++)
         {
             if (thuocs[i].gettenthuoc().find(ten) != string::npos)
             {
                 thuocs[i].display();
-                cout << "-------------------------\n";
-                found = true;
-            }
-        }
-
-        if (!found)
-            cout << "Khong tim thay thuoc!\n";
-    }
-
-    void deleteThuoc(const string &ma)
-    {
-        for (size_t i = 0; i < thuocs.size(); i++)
-        {
-            if (thuocs[i].getmathuoc() == ma)
-            {
-                thuocs.erase(thuocs.begin() + i);
-                cout << "Da xoa thuoc thanh cong!\n";
+                printline("-");
                 return;
             }
         }
 
+            cout << "Khong tim thay thuoc!\n";
+            return;
+        }
+
+    void deleteThuoc(const string &filePath)
+    {
+        string temp;
+            cout << "Nhap ma thuoc can xoa: \n";
+            getline(cin,temp);
+        for (size_t i = 0; i < thuocs.size(); i++)
+        {
+            if (thuocs[i].getmathuoc() == temp)
+            {
+                thuocs.erase(thuocs.begin() + i);
+                cout << "Da xoa thuoc thanh cong!\n";
+                saveToFile(filePath);
+                return;
+            }
+        }
         cout << "Khong tim thay ma thuoc!\n";
     }
 
-    // bool keThuoc(vector<Thuoc> &thuocBN, const string &filePath)
-    // {
-    //     string ma;
-    //     int sl;
+    void updateMedicine(const string &filePath)
+    {
+        string ma;
 
-    //     cout << "Nhap ma thuoc can ke: ";
-    //     getline(cin, ma);
+        cout << "Nhap ma thuoc can cap nhat: ";
+        getline(cin, ma);
 
-    //     for (size_t i = 0; i < thuocs.size(); i++)
-    //     {
-    //         if (thuocs[i].getmathuoc() == ma)
-    //         {
-    //             cout << "Ten thuoc: " << setw(25) << thuocs[i].gettenthuoc();
-    //             cout << "so luong ton kho: " << setw(10)
-    //                  << thuocs[i].getsoluong() << endl;
+        int i = indexOf(ma);
 
-    //             cout << "Nhap so luong can ke: ";
-    //             cin >> sl;
-    //             cin.ignore(1000, '\n');
+        if (i == -1)
+        {
+            cout << "Khong tim thay ma thuoc!\n";
+            return;
+        }
 
-    //             if (sl <= 0)
-    //             {
-    //                 cout << "So luong phai lon hon 0!\n";
-    //                 return false;
-    //             }
+        printgiua(" THONG TIN THUOC HIEN TAI ", "-");
+        thuocs[i].display();
 
-    //             if (sl > thuocs[i].getsoluong())
-    //             {
-    //                 cout << "Khong du thuoc trong kho!\n";
-    //                 return false;
-    //             }
+        int chon;
+        printgiua(" CHON THONG TIN CAN CAP NHAT ", "=");
+        cout << "1. Cap nhat don gia\n";
+        cout << "2. Cap nhat so luong ton kho\n";
+        cout << "3. Cap nhat ca don gia va so luong\n";
+        cout << "0. Huy cap nhat\n";
 
-    //             Thuoc thuocKe = thuocs[i];
-    //             thuocKe.setsoluong(sl);
-    //             thuocBN.push_back(thuocKe);
+        cout << "Lua chon cua ban: ";
 
-    //             thuocs[i].setsoluong(
-    //                 thuocs[i].getsoluong() - sl);
+        while (!(cin >> chon) || chon < 0 || chon > 3)
+        {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Lua chon khong hop le! Nhap lai: ";
+        }
 
-    //             saveToFile(filePath);
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    //             cout << "Ke thuoc thanh cong!\n";
-    //             cout << "So luong con lai: "
-    //                  << thuocs[i].getsoluong() << endl;
+        if (chon == 0)
+        {
+            cout << "Da huy cap nhat!\n";
+            return;
+        }
 
-    //             return true;
-    //         }
-    //     }
+        double gia;
+        int sl;
 
-    //     cout << "Khong tim thay ma thuoc!\n";
-    //     return false;
-    // }
+        if (chon == 1 || chon == 3)
+        {
+            cout << "Nhap don gia moi: ";
+
+            while (!(cin >> gia) || gia < 0)
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Don gia khong hop le! Nhap lai: ";
+            }
+
+            thuocs[i].setdongia(gia);
+        }
+
+        if (chon == 2 || chon == 3)
+        {
+            cout << "Nhap so luong ton kho moi: ";
+
+            while (!(cin >> sl) || sl < 0)
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "So luong khong hop le! Nhap lai: ";
+            }
+
+            thuocs[i].setsoluong(sl);
+        }
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        saveToFile(filePath);
+
+        cout << "Cap nhat thuoc thanh cong!\n";
+        printgiua(" THONG TIN SAU KHI CAP NHAT ", "-");
+        thuocs[i].display();
+    }
 
     void saveToFile(const string &filePath)
     {

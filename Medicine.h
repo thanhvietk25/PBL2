@@ -162,7 +162,7 @@ public:
         file << donvitinh << '\n';
         file << congdung << '\n';
         file << dongia << '\n';
-        file << soluong;
+        file << soluong << '\n';
     }
 
     void readFile(ifstream &file)
