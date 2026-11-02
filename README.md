@@ -1,8 +1,7 @@
 # 🏥 DỰ ÁN PBL2: HỆ THỐNG QUẢN LÝ BỆNH VIỆN & ĐƠN THUỐC 🚀
 
-![C++](https://shields.io)
-![Platform](https://shields.io)
-![Status](https://shields.io)
+🛠️ **Ngôn ngữ:** `C++` &nbsp;|&nbsp; 💻 **Nền tảng:** `Windows` &nbsp;|&nbsp; 🎯 **Trạng thái:** `Hoàn thành (100%)`
+
 
 > **Đồ án Cơ sở Lập trình (PBL2)**  
 > Khoa Công nghệ Thông tin - Trường Đại học Bách Khoa - ĐHĐN.
