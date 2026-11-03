@@ -1,0 +1,2 @@
+admin	admin	admin123	Mau yeu thich?	xanh
+thanhviet	user	thanhviet	Yeu ai?	Vuong
