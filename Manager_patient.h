@@ -1,4 +1,3 @@
-
 #ifndef MANAGER_PATIENT_H
 #define MANAGER_PATIENT_H
 
@@ -12,6 +11,7 @@
 #include <sstream>
 
 #include "Patient.h"
+#include "Display.h"
 
 using namespace std;
 
@@ -83,9 +83,7 @@ public:
 
         for (size_t i = 0; i < patients.size(); i++)
         {
-            cout << "\n========== BENH NHAN "
-                 << i + 1
-                 << " ==========\n";
+            printgiua(" BENH NHAN " + to_string(i + 1) + " ", "=");
 
             patients[i].display();
         }
@@ -93,7 +91,7 @@ public:
 
     void addPatient(const string &filePath)
     {
-        cout << "\n--- NHAP THONG TIN BENH NHAN MOI ---\n";
+        printgiua(" NHAP THONG TIN BENH NHAN MOI ", "-");
 
         Patient p;
         p.input();
@@ -193,8 +191,7 @@ public:
 
             if (currentName.find(key) != string::npos)
             {
-                cout << "\n========== BENH NHAN "
-                     << i + 1 << " ==========\n";
+                printgiua(" BENH NHAN " + to_string(i + 1) + " ", "=");
 
                 patients[i].display();
                 found = true;
@@ -221,8 +218,7 @@ public:
         {
             if (patients[i].getcccd() == cccdsearch)
             {
-                cout << "\n========== BENH NHAN "
-                     << i + 1 << " ==========\n";
+                printgiua(" BENH NHAN " + to_string(i + 1) + " ", "=");
 
                 patients[i].display();
                 return;
@@ -422,7 +418,8 @@ public:
             {
                 p.display();
 
-                cout << "\n\n===== CHON THONG TIN MUON SUA =====\n";
+                cout << "\n";
+                printgiua(" CHON THONG TIN MUON SUA ", "=");
                 cout << "1. Ho va ten\n";
                 cout << "2. CCCD\n";
                 cout << "3. So dien thoai\n";
@@ -471,6 +468,44 @@ public:
 
         cout << "Khong tim thay benh nhan co CCCD: "
              << cccdEdit << endl;
+    }
+    void deletePatient(const string &filePath)
+    {
+        string cccdXoa;
+
+        cout << "Nhap CCCD benh nhan can xoa: ";
+
+        if (!getline(cin, cccdXoa))
+            return;
+
+        for (size_t i = 0; i < patients.size(); i++)
+        {
+            if (patients[i].getcccd() != cccdXoa)
+                continue;
+
+            printgiua(" BENH NHAN " + to_string(i + 1) + " ", "=");
+            patients[i].display();
+
+            string xacNhan;
+            cout << "Ban co chac chan muon xoa benh nhan nay? (y/n): ";
+
+            if (!getline(cin, xacNhan))
+                return;
+
+            if (xacNhan != "y" && xacNhan != "Y")
+            {
+                cout << "-> Da huy xoa.\n";
+                return;
+            }
+
+            patients.erase(patients.begin() + i);
+            saveToFile(filePath);
+
+            cout << "-> Da xoa benh nhan co CCCD: " << cccdXoa << endl;
+            return;
+        }
+
+        cout << "Khong tim thay benh nhan co CCCD: " << cccdXoa << endl;
     }
 };
 

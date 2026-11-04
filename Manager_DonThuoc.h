@@ -14,6 +14,7 @@
 #include "Manager_patient.h"
 #include "Manager_Medicine.h"
 #include "Input_util.h"
+#include "Display.h"
 
 using namespace std;
 
@@ -48,20 +49,26 @@ public:
     void keDon(Manager_Doctor &bacsi, manager_patient &benhnhan, Manager_Thuoc &kho,
                const string &fileDon, const string &fileThuoc)
     {
-        cout << "\n--- KE DON THUOC ---\n";
+        printgiua(" KE DON THUOC ", "-");
 
         string cccdbs, cccdbn;
 
         if (!docDong("Nhap CCCD bac si ke don: ", cccdbs))
             return;
-        Doctor *bs = bacsi.findByCCCD(cccdbs);
+        NhanVien *bs = bacsi.findByCCCD(cccdbs);
         if (!bs)
         {
-            cout << "Khong tim thay bac si co CCCD: " << cccdbs << endl;
+            cout << "Khong tim thay nhan su co CCCD: " << cccdbs << endl;
             return;
         }
-        cout << "-> Bac si: " << bs->getname()
-             << " - Chuyen nganh: " << bs->getchuyennganh() << endl;
+        if (!bs->duocKeDon())
+        {
+            cout << "-> " << bs->getChucVu() << " " << bs->getname()
+                 << " KHONG co quyen ke don thuoc!\n";
+            return;
+        }
+        cout << "-> " << bs->getChucVu() << ": " << bs->getname()
+             << " - Khoa: " << bs->getkhoa() << endl;
 
         if (!docDong("Nhap CCCD benh nhan: ", cccdbn))
             return;

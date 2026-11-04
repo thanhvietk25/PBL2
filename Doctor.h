@@ -4,108 +4,35 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <limits>
 
 #include "Manager_Medicine.h"
 #include "Manager_patient.h"
-#include "Person.h"
-
+#include "NhanVien.h"
 
 using namespace std;
 
-class Doctor : public Person
+class Doctor : public NhanVien
 {
-private:
-    string chuyennganh;
-    string id;
+protected:
     int soca;
-
 public:
-    // bool keThuoc(manager_patient &managerPatient,Manager_Thuoc &managerMedicine, const string &filePath)
-    // {
-    //     string cccd;
+    Doctor() : soca(0) {}
 
-    //     cout << "Nhap CCCD benh nhan can ke thuoc: ";
-    //     getline(cin, cccd);
+    string getTag() const override { return "[BACSI]"; }
+    string getChucVu() const override { return "Bac si"; }
+    bool duocKeDon() const override { return true; }
+    string getGhiChu() override { return "So ca: " + to_string(soca); }
+    NhanVien *clone() const override { return new Doctor(*this); }
 
-    //     Patient *bn = managerPatient.getPatientByCCCD(cccd);
+    int getSoca() { return soca; }
+    void setSoca(int s) { soca = s; }
 
-    //     if (bn == nullptr)
-    //     {
-    //         cout << "Khong tim thay benh nhan!\n";
-    //         return false;
-    //     }
-
-    //     cout << "\nThong tin benh nhan:\n";
-    //     cout << "Ho ten: " << bn->getname() << endl;
-    //     cout << "CCCD: " << bn->getcccd() << endl;
-
-    //     cout << "\nTien hanh ke thuoc!!!\n";
-
-    //     return managerMedicine.keThuoc(
-    //         bn->getthuoc(), filePath);
-    // }
-
-    void change_in4()
+    void input() override
     {
-        cin.ignore(1000, '\n');
-        string s;
-        int a;
-
-        cout << "Nhap ho ten moi: ";
-        getline(cin, s);
-        Person::setname(s);
-
-        cout << "Nhap CCCD moi: ";
-        getline(cin, s);
-        Person::setcccd(s);
-
-        cout << "Nhap so dien thoai moi: ";
-        getline(cin, s);
-        Person::setnumber(s);
-
-        cout << "Nhap gioi tinh moi (1 = Nu / 0 = Nam): ";
-        cin >> a;
-        while (a != 0 && a != 1)
-        {
-            cout << "Vui long nhap 0 hoac 1: ";
-            cin >> a;
-        }
-        Person::setgender(a == 1);
-
-        cout << "Nhap tuoi moi: ";
-        cin >> a;
-        while (a < 1 || a > 120)
-        {
-            cout << "Tuoi khong hop le, nhap lai: ";
-            cin >> a;
-        }
-        Person::setage(a);
-
-        cin.ignore(1000, '\n');
-
-        cout << "Chuyen chuyen nganh cua bac si thanh: ";
-        getline(cin, chuyennganh);
-
-        cout << "Chuyen doi ID cua bac si thanh: ";
-        getline(cin, id);
-    }
-    string getcccd()
-    {
-        return Person::getcccd();
-    }
-    void input()
-    {
-        Person::input();
-
-        cout << "Nhap ID bac si: ";
-        cin >> id;
-        cin.ignore();
-
-        cout << "Nhap chuyen nganh: ";
-        getline(cin, chuyennganh);
+        NhanVien::input();
 
         cout << "Nhap so ca kham: ";
-
         while (!(cin >> soca) || soca < 0)
         {
             cout << "So ca khong hop le! Vui long nhap lai: ";
@@ -113,32 +40,35 @@ public:
             cin.ignore(1000, '\n');
         }
     }
-    string getchuyennganh()
+
+    void nhapThongTinRieng() override
     {
-        return chuyennganh;
+        while (true)
+        {
+            if (!docSoNguyen("Nhap so ca kham: ", soca))
+                return;
+            if (soca >= 0)
+                break;
+            cout << "So ca khong hop le!\n";
+        }
     }
-    int getSoca()
+
+    void display() override
     {
-        return soca;
+        NhanVien::display();
+        cout << "So ca: " << soca << endl;
     }
 
-    void readFile(ifstream &file)
+    void readFile(ifstream &file) override
     {
-        Person::readFile(file);
-
-        getline(file, chuyennganh);
-        getline(file, id);
-
+        NhanVien::readFile(file);
         file >> soca;
         file.ignore(numeric_limits<streamsize>::max(), '\n');
     }
 
-    void writeFile(ofstream &file)
+    void writeFile(ofstream &file) override
     {
-        Person::writeFile(file);
-
-        file << chuyennganh << endl;
-        file << id << endl;
+        NhanVien::writeFile(file);
         file << soca << endl;
     }
 };
